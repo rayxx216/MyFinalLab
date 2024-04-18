@@ -164,11 +164,116 @@
             </div>
         </section>
         <!-- Map-->
-        <div class="map" id="contact">
-            <iframe src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe>
-            <br />
-            <small><a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;aq=0&amp;oq=twitter&amp;sll=28.659344,-81.187888&amp;sspn=0.128789,0.264187&amp;ie=UTF8&amp;hq=Twitter,+Inc.,+Market+Street,+San+Francisco,+CA&amp;t=m&amp;z=15&amp;iwloc=A"></a></small>
-        </div>
+        <html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>ArcGIS Maps SDK for JavaScript Tutorials: Add a point, line, and polygon</title>
+  <style>
+    html, body, #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.29/"></script>
+  <script>
+
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"
+
+    ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
+
+  esriConfig.apiKey = "AAPK7173e57d0301419c90ce51d1d067b332ENu3_t13jhuo17GMr3OpbsucTqFN7QaKpFWluF8n1_im2R6-g-MLyAanFVLH-r4U";
+
+  const map = new Map({
+    basemap: "arcgis/topographic" // basemap styles service
+  });
+
+  const view = new MapView({
+    map: map,
+    center: [139.6740219,35.6425808], //Longitude, latitude
+    zoom: 13,
+    container: "viewDiv"
+ });
+
+ const graphicsLayer = new GraphicsLayer();
+ map.add(graphicsLayer);
+
+ const point = { //Create a point
+    type: "point",
+    longitude: 139.6740219,
+    latitude: 35.6425808
+ };
+ const simpleMarkerSymbol = {
+    type: "simple-marker",
+    color: [152, 30, 50],  // Orange
+    outline: {
+        color: [0, 0, 0], // White
+        width: 1
+    }
+ };
+
+ const pointGraphic = new Graphic({
+    geometry: point,
+    symbol: simpleMarkerSymbol
+ });
+ graphicsLayer.add(pointGraphic);
+
+ // Create a polygon geometry
+ const polygon = {
+    type: "polygon",
+    rings: [
+        [139.723434, 35.632465], //Longitude, latitude
+        [139.65115962347198, 35.60225360377422], //Longitude, latitude
+        [139.603658, 35.630944,], //Longitude, latitude
+        [139.6216998, 35.6540246],   //Longitude, latitude
+        [139.7070442, 35.6612288]  //Longitude, latitude
+    ]
+ };
+
+ const simpleFillSymbol = {
+    type: "simple-fill",
+    color: [220,220,220, 0.2],  // Orange, opacity 80%
+    outline: {
+        color: [0,0,0],
+        width: 1
+    }
+ };
+
+ const popupTemplate = {
+    title: "{Name}",
+    content: "{Description}"
+ }
+ const attributes = {
+    Name: "Graphic",
+    Description: "Tokyo"
+ }
+
+ const polygonGraphic = new Graphic({
+    geometry: polygon,
+    symbol: simpleFillSymbol,
+
+    attributes: attributes,
+    popupTemplate: popupTemplate
+
+ });
+ graphicsLayer.add(polygonGraphic);
+
+ });
+</script>
+</head>
+<body>
+  <div id="viewDiv"></div>
+</body>
+</html>
         <!-- Footer-->
         <footer class="footer text-center">
             <div class="container px-4 px-lg-5">
